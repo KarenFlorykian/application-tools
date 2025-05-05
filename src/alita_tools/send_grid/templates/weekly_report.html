@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+<p>The latest update on the engagement: <span class="highlight">{{ engagement.name if engagement.name else 'No engagement name available' }}</span>.</p>
+<p>Report generated on: <span class="highlight">{{ current_date if current_date else 'No date available' }}</span></p>
+<h3>Active Tickets</h3>
+{% if tickets_summary %}
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Assignee</th>
+        <th>Status</th>
+        <th>Severity</th>
+        <th>Type</th>
+        <th>Start Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for status, tickets_list in tickets_summary.items() %}
+    {% if status != 'done' %}
+    {% for ticket in tickets_list %}
+    <tr>
+        <td>{{ ticket.title if ticket.title else 'No title available' }}</td>
+        <td>{{ ticket.assignee.name.lower() if ticket.assignee else 'n/a' }}</td>
+        <td>{{ status.upper() }}</td>
+        <td>{{ ticket.severity.upper() if ticket.severity else 'No severity available' }}</td>
+        <td>{{ ticket.type if ticket.type else 'Activity' }}</td>
+        <td>{{ ticket.start_date if ticket.start_date else 'No start date available' }}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="no-content">No active tickets available.</p>
+{% endif %}
+<h3>Recently Completed Tickets (Last 5 Days)</h3>
+{% if recent_done_tickets %}
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Assignee</th>
+        <th>Completion Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ticket in recent_done_tickets %}
+    <tr>
+        <td>{{ ticket.title if ticket.title else 'No title available' }}</td>
+        <td>{{ ticket.assignee.name.lower() if ticket.assignee else 'n/a' }}</td>
+        <td>{{ ticket.completion_date if ticket.completion_date else 'No completion date available' }}</td>
+        <td>{{ ticket.type if ticket.type else 'Activity' }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="no-content">No recently completed tickets available.</p>
+{% endif %}

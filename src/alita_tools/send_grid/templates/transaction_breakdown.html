@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Humio Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #2a9d8f;
+        }
+        .critical {
+            font-weight: bold;
+            color: red;
+        }
+        .no-content {
+            color: #ff0000;
+            font-style: italic;
+        }
+        .section-title {
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Humio Analysis Report</h1>
+
+<p>Report generated on: <span class="highlight">{{ current_date if current_date else 'No date available' }}</span></p>
+
+<h2 class="section-title">Report Summary</h2>
+<p><strong>Total Transactions:</strong> {{ analyzed_results|length }}</p>
+<p><strong>Average Duration:</strong> {{ average_duration if average_duration else 'N/A' }}</p>
+<p><strong>Highest Confidence Level:</strong> {{ highest_confidence_level if highest_confidence_level else 'N/A' }}</p>
+
+{% for result in analyzed_results %}
+    <h2 class="section-title">Analysis Report</h2>
+<div>
+    {{ result.analysis_html | safe }}
+</div>
+{% endfor %}
+
+<p>For more details, please refer to the <a href="https://platform.getcarrier.io/">Carrier Platform</a>.</p>
+
+<p>Best regards,</p>
+<p>PTaaS Team</p>
+</body>
+</html>
